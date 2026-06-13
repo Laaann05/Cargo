@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RV Bali Cargo | Trusted Logistics & Relocation Solutions in Bali</title>
+    <link rel="icon" type="image/png" href="rv bali cargo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        .text-rv-red { color: #e11d48; } 
+        .bg-rv-red { background-color: #e11d48; }
+        .text-rv-grey { color: #374151; }
+        .bg-rv-grey { background-color: #1f2937; }
+
+        .hero-bg { 
+            background: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.7)), 
+            url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+        }
+
+        /* Dropdown Animation Desktop */
+        .dropdown-menu { opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.3s ease; }
+        .group:hover .dropdown-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800" x-data="mainApp()">
+
+<nav x-data="{ 
+        mobileOpen: false, 
+        aboutOpen: false, 
+        servicesOpen: false, 
+        desktopAboutOpen: false,
+        desktopServicesOpen: false,
+        isScrolled: false,
+        currentPath: window.location.pathname.split('/').pop() || 'index.html'
+     }" 
+     @scroll.window="isScrolled = (window.pageYOffset > 80)"
+     class="sticky top-0 z-50 bg-[#111827] text-white border-b-4 border-rv-red transition-all duration-500 shadow-xl"
+     :class="isScrolled ? 'shadow-2xl' : ''">
+        
+    <div class="border-b border-gray-800 transition-all duration-500 hidden xl:block"
+         :class="isScrolled ? '-translate-y-full opacity-0 absolute pointer-events-none w-full' : 'translate-y-0 opacity-100 relative py-4'">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center gap-6 lg:gap-12">
+                
+                <a href="index.html" class="flex items-center gap-3 shrink-0">
+                    <img src="rv bali cargo.png" alt="Logo RV Bali Cargo" class="h-12 lg:h-14 w-auto object-contain">
+                    <div class="border-l-2 border-gray-700 pl-3 py-0.5">
+                        <h1 class="text-base lg:text-lg font-black italic uppercase leading-none tracking-tighter">
+                            <span class="text-rv-red">RV Bali</span>
+                            <span class="text-gray-400">Cargo</span>
+                        </h1>
+                        <p class="text-[8px] text-gray-500 font-bold uppercase tracking-[0.2em] mt-1">
+                            International Freight Forwarder
+                        </p>
+                    </div>
+                </a>
+
+                <div class="flex flex-1 justify-end items-center gap-4 lg:gap-8 font-bold">
+                    
+                    <div class="flex items-center gap-2.5 border-l border-gray-800 pl-4 lg:pl-6 first:border-0 first:pl-0">
+                        <div class="text-rv-red text-sm shrink-0">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="text-left flex flex-col justify-center">
+                            <h4 class="text-white font-black text-[9px] lg:text-[10px] uppercase tracking-wider leading-none mb-1" x-text="t('call_center')">Call Center (24H Service) :</h4>
+                            <a href="tel:+6282237799751" class="text-[10px] lg:text-xs text-gray-300 hover:text-rv-red transition leading-tight">+62 822-3779-9751</a>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2.5 border-l border-gray-800 pl-4 lg:pl-6">
+                        <div class="text-rv-red text-sm shrink-0">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <div class="text-left flex flex-col justify-center">
+                            <h4 class="text-white font-black text-[9px] lg:text-[10px] uppercase tracking-wider leading-none mb-1" x-text="t('working_hours')">Working Hours</h4>
+                            <p class="text-[10px] lg:text-xs text-gray-300 leading-tight">09.00 - 17.00</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 lg:gap-6 border-l border-gray-800 pl-4 lg:pl-6">
+                        <div class="flex items-center gap-2.5">
+                            <div class="text-rv-red text-sm shrink-0">
+                                <i class="far fa-envelope"></i>
+                            </div>
+                            <div class="text-left flex flex-col justify-center">
+                                <h4 class="text-white font-black text-[9px] lg:text-[10px] uppercase tracking-wider leading-none mb-1" x-text="t('contact_email')">Contact By Email</h4>
+                                <a href="mailto:info@rvbalicargo.com" class="text-[10px] lg:text-xs text-gray-300 hover:text-rv-red transition leading-tight">info@rvbalicargo.com</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Language Switcher -->
+                        <div class="flex items-center gap-1 border-l border-gray-800 pl-4 lg:pl-6">
+                            <button @click="setLang('en')" class="px-2 py-1 text-[10px] rounded transition" :class="lang === 'en' ? 'bg-rv-red text-white' : 'bg-gray-800 text-gray-400 hover:text-white'">EN</button>
+                             <button @click="setLang('id')" class="px-2 py-1 text-[10px] rounded transition" :class="lang === 'id' ? 'bg-rv-red text-white' : 'bg-gray-800 text-gray-400 hover:text-white'">ID</button>
+                        </div>
+
+                        <div class="flex items-center gap-1 border-l border-gray-800 pl-4 lg:pl-6">
+                            <a href="#" class="w-6 h-6 bg-gray-800 flex items-center justify-center text-[10px] text-white hover:bg-rv-red transition rounded-sm"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="w-6 h-6 bg-gray-800 flex items-center justify-center text-[10px] text-white hover:bg-rv-red transition rounded-sm"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="w-6 h-6 bg-gray-800 flex items-center justify-center text-[10px] text-white hover:bg-rv-red transition rounded-sm"><i class="fab fa-instagram"></i></a>
+                            <a href="https://wa.me/6282237799751" class="w-6 h-6 bg-gray-800 flex items-center justify-center text-[10px] text-white hover:bg-rv-red transition rounded-sm"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 md:px-6">
+        <div class="flex justify-between items-center h-16">
+            
+            <div class="flex items-center text-white py-2 shrink-0 transition-all duration-500"
+                 :class="isScrolled ? 'opacity-100 visible translate-x-0 relative' : 'xl:opacity-0 xl:invisible xl:-translate-x-4 absolute pointer-events-none relative'">
+                <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <img src="rv bali cargo.png" alt="Logo RV Bali Cargo" class="h-8 w-auto object-contain">
+                    <div class="border-l border-gray-700 pl-2 py-0.5 flex flex-col justify-center">
+                        <span class="font-black text-[11px] uppercase tracking-wider leading-none">
+                            <span class="text-rv-red">RV Bali</span> <span class="text-gray-300">Cargo</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center justify-center flex-1 space-x-4 lg:space-x-8 font-bold text-[10px] lg:text-xs uppercase tracking-widest text-gray-300 transition-all duration-500">
+                
+                <a href="index.html" class="py-4 block transition border-b-2 duration-300" 
+                   :class="currentPath === 'index.html' ? 'text-rv-red border-rv-red' : 'hover:text-rv-red border-transparent hover:border-rv-red'" x-text="t('nav_home')">Home</a>
+                
+                <div class="relative" @click.away="desktopAboutOpen = false">
+                    <button @click="desktopAboutOpen = !desktopAboutOpen; desktopServicesOpen = false" class="flex items-center py-4 outline-none uppercase transition border-b-2 border-transparent duration-300" 
+                            :class="['companyprofile.html', 'ourteam.html'].includes(currentPath) || desktopAboutOpen ? 'text-rv-red border-rv-red' : 'hover:text-rv-red hover:border-rv-red'">
+                        <span x-text="t('nav_about')">About Us</span> <i class="fas fa-chevron-down ml-1.5 text-[9px] transition-transform duration-300" :class="desktopAboutOpen ? 'rotate-180 text-rv-red' : ''"></i>
+                    </button>
+                    
+                    <div x-show="desktopAboutOpen" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-2"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 translate-y-2"
+                         class="absolute left-0 w-56 bg-white border-t-4 border-rv-red shadow-2xl rounded-b-lg overflow-hidden z-50 mt-1">
+                        <a href="companyprofile.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition border-b border-gray-50 text-[11px]" :class="currentPath === 'companyprofile.html' ? 'bg-rose-50 text-rv-red' : ''" x-text="t('nav_company_profile')">Company Profile</a>
+                        <a href="ourteam.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition text-[11px]" :class="currentPath === 'ourteam.html' ? 'bg-rose-50 text-rv-red' : ''" x-text="t('nav_our_team')">Our Team</a>
+                    </div>
+                </div>
+
+                <div class="relative" @click.away="desktopServicesOpen = false">
+                    <button @click="desktopServicesOpen = !desktopServicesOpen; desktopAboutOpen = false" class="flex items-center py-4 outline-none uppercase transition border-b-2 border-transparent duration-300" 
+                            :class="['services.html', 'sea-freight.html', 'air-freight.html', 'land-freight.html', 'relocation.html'].includes(currentPath) || desktopServicesOpen ? 'text-rv-red border-rv-red' : 'hover:text-rv-red hover:border-rv-red'">
+                        <span x-text="t('nav_services')">Services</span> <i class="fas fa-chevron-down ml-1.5 text-[9px] transition-transform duration-300" :class="desktopServicesOpen ? 'rotate-180 text-rv-red' : ''"></i>
+                    </button>
+                    
+                    <div x-show="desktopServicesOpen" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 translate-y-2"
+                         x-transition:enter-end="opacity-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 translate-y-2"
+                         class="absolute left-0 w-64 bg-white border-t-4 border-rv-red shadow-2xl rounded-b-lg overflow-hidden z-50 mt-1">
+                        <a href="services.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition border-b border-gray-50 text-[11px]" :class="currentPath === 'services.html' ? 'bg-rose-50 text-rv-red' : ''"><i class="fas fa-ship mr-2"></i> <span x-text="t('nav_all_services')">Semua Layanan(All Service)</span></a>
+                        <a href="sea-freight.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition border-b border-gray-50 text-[11px]" :class="currentPath === 'sea-freight.html' ? 'bg-rose-50 text-rv-red' : ''"><i class="fas fa-ship mr-2"></i> <span x-text="t('nav_sea_freight')">Jalur Laut</span></a>
+                        <a href="air-freight.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition border-b border-gray-50 text-[11px]" :class="currentPath === 'air-freight.html' ? 'bg-rose-50 text-rv-red' : ''"><i class="fas fa-plane mr-2"></i> <span x-text="t('nav_air_freight')">Jalur Udara</span></a>
+                        <a href="land-freight.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition border-b border-gray-50 text-[11px]" :class="currentPath === 'land-freight.html' ? 'text-rv-red bg-rose-50' : ''"><i class="fas fa-truck mr-2"></i> <span x-text="t('nav_land_freight')">Jalur Darat</span></a>
+                        <a href="relocation.html" class="block px-6 py-4 text-gray-700 hover:bg-rose-50 hover:text-rv-red transition text-[11px]" :class="currentPath === 'relocation.html' ? 'bg-rose-50 text-rv-red' : ''"><i class="fas fa-box-open mr-2"></i> <span x-text="t('nav_relocation')">Jasa Pindahan</span></a>
+                    </div>
+                </div>
+
+                <a href="testimonials.html" class="py-4 block transition border-b-2 duration-300" :class="currentPath === 'testimonials.html' ? 'text-rv-red border-rv-red' : 'hover:text-rv-red border-transparent hover:border-rv-red'" x-text="t('nav_testimonials')">Testimonials</a>
+                <a href="gallery.html" class="py-4 block transition border-b-2 duration-300" :class="currentPath === 'gallery.html' ? 'text-rv-red border-rv-red' : 'hover:text-rv-red border-transparent hover:border-rv-red'" x-text="t('nav_gallery')">Gallery</a>
+                <a href="contact.html" class="py-4 block transition border-b-2 duration-300" :class="currentPath === 'contact.html' ? 'text-rv-red border-rv-red' : 'hover:text-rv-red border-transparent hover:border-rv-red'" x-text="t('nav_contact')">Contact Us</a>
+                
+                <!-- Language Switcher Mobile Toggle Side -->
+                <div class="flex items-center gap-2 border-l border-gray-800 pl-4">
+                    <button @click="setLang('en')" class="hover:text-rv-red transition" :class="lang === 'en' ? 'text-rv-red underline' : ''">EN</button>
+                    <span class="text-gray-700">|</span>
+                    <button @click="setLang('id')" class="hover:text-rv-red transition" :class="lang === 'id' ? 'text-rv-red underline' : ''">ID</button>
+                </div>
+            </div>
+
+            <button @click="mobileOpen = !mobileOpen" class="md:hidden text-2xl text-white p-2 focus:outline-none ml-auto">
+                <i :class="mobileOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <div x-show="mobileOpen" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-4"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-4"
+         class="md:hidden bg-white border-t p-6 space-y-4 shadow-xl font-bold uppercase text-sm"
+         style="display: none;">
+         
+        <a href="index.html" class="block py-1" :class="currentPath === 'index.html' ? 'text-rv-red' : 'text-gray-800'" x-text="t('nav_home')">Home</a>
+        
+        <div class="space-y-2">
+            <button @click="aboutOpen = !aboutOpen" class="flex justify-between items-center w-full py-1" :class="['companyprofile.html', 'ourteam.html'].includes(currentPath) ? 'text-rv-red' : 'text-gray-800 hover:text-rv-red'">
+                <span x-text="t('nav_about')">ABOUT US</span> <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="aboutOpen ? 'rotate-180' : ''"></i>
+            </button>
+            <div x-show="aboutOpen" x-transition class="pl-4 space-y-3 mt-2 text-xs text-gray-500 border-l-2 border-rv-red">
+                <a href="companyprofile.html" class="block py-1" :class="currentPath === 'companyprofile.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_company_profile')">Company Profile</a>
+                <a href="ourteam.html" class="block py-1" :class="currentPath === 'ourteam.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_our_team')">Our Team</a>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <button @click="servicesOpen = !servicesOpen" class="flex justify-between items-center w-full py-1" :class="['services.html', 'sea-freight.html', 'air-freight.html', 'land-freight.html', 'relocation.html'].includes(currentPath) ? 'text-rv-red' : 'text-gray-800 hover:text-rv-red'">
+                <span x-text="t('nav_services')">SERVICES</span> <i class="fas fa-chevron-down text-xs transition-transform duration-200" :class="servicesOpen ? 'rotate-180' : ''"></i>
+            </button>
+            <div x-show="servicesOpen" x-transition class="pl-4 space-y-3 mt-2 text-xs text-gray-500 border-l-2 border-rv-red">
+                <a href="services.html" class="block py-1" :class="currentPath === 'services.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_all_services')">Semua Layanan</a>
+                <a href="sea-freight.html" class="block py-1" :class="currentPath === 'sea-freight.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_sea_freight')">Jalur Laut</a>
+                <a href="air-freight.html" class="block py-1" :class="currentPath === 'air-freight.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_air_freight')">Jalur Udara</a>
+                <a href="land-freight.html" class="block py-1" :class="currentPath === 'land-freight.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_land_freight')">Jalur Darat</a>
+                <a href="relocation.html" class="block py-1" :class="currentPath === 'relocation.html' ? 'text-rv-red font-black' : ''" x-text="t('nav_relocation')">Jasa Pindahan</a>
+            </div>
+        </div>
+        
+        <a href="testimonials.html" class="block py-1" :class="currentPath === 'testimonials.html' ? 'text-rv-red' : 'text-gray-800'" x-text="t('nav_testimonials')">Testimonials</a>
+        <a href="gallery.html" class="block py-1" :class="currentPath === 'gallery.html' ? 'text-rv-red' : 'text-gray-800'" x-text="t('nav_gallery')">Gallery</a>
+        <a href="contact.html" class="block py-1" :class="currentPath === 'contact.html' ? 'text-rv-red' : 'text-gray-800'" x-text="t('nav_contact')">Contact Us</a>
+
+        <!-- Language Switcher Mobile -->
+        <div class="flex gap-4 pt-4 border-t">
+            <button @click="setLang('en')" class="flex-1 py-2 text-center rounded border" :class="lang === 'en' ? 'bg-rv-red text-white border-rv-red' : 'text-gray-600 border-gray-200'">EN</button>
+            <button @click="setLang('id')" class="flex-1 py-2 text-center rounded border" :class="lang === 'id' ? 'bg-rv-red text-white border-rv-red' : 'text-gray-600 border-gray-200'">ID</button>
+        </div>
+    </div>
+    
+</nav>
+
+    <header class="hero-bg h-[700px] flex items-center">
+        <div class="container mx-auto px-6 text-white">
+            <span class="text-rv-red font-black tracking-[0.3em] uppercase text-sm mb-4 block italic" x-text="t('hero_subtitle')">Your Strategic Logistics Partner</span>
+            <h1 class="text-5xl md:text-7xl font-black italic uppercase leading-tight mb-6" x-html="t('hero_title')">Reliable <span class="text-rv-red">Cargo</span><br>Solutions.</h1>
+            <p class="text-lg max-w-2xl mb-8 text-gray-300 border-l-4 border-rv-red pl-4 leading-relaxed uppercase text-sm font-bold tracking-wide" x-text="t('hero_desc')">
+                Layanan Door-to-Door Internasional & Domestik. Pindahan Profesional (Relokasi) dengan Transparansi Biaya Tanpa Hidden Fees.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="https://wa.me/6282237799751" class="bg-rv-red px-10 py-4 font-black uppercase hover:bg-red-700 transition shadow-lg text-xs tracking-widest" x-text="t('chat_admin_1')">Chat Admin 1</a>
+                <a href="https://wa.me/6287810000911" class="bg-white text-rv-grey px-10 py-4 font-black uppercase hover:bg-gray-200 transition shadow-lg text-xs tracking-widest" x-text="t('chat_admin_2')">Chat Admin 2</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-20 container mx-auto px-6">
+        <div class="grid md:grid-cols-4 gap-6 -mt-32 relative z-10">
+            <div class="bg-white p-8 shadow-2xl border-t-8 border-rv-grey group hover:-translate-y-2 transition-all">
+                <i class="fas fa-ship text-3xl text-rv-red mb-6"></i>
+                <h3 class="font-black uppercase italic mb-3 text-sm" x-text="t('feat_1_title')">Export & Import</h3>
+                <p class="text-gray-600 text-[11px] leading-relaxed" x-text="t('feat_1_desc')">Pengiriman mingguan dari Singapura, China, hingga USA dengan Customs Clearance legal.</p>
+            </div>
+            <div class="bg-white p-8 shadow-2xl border-t-8 border-rv-red group hover:-translate-y-2 transition-all">
+                <i class="fas fa-truck-moving text-3xl text-rv-grey mb-6"></i>
+                <h3 class="font-black uppercase italic mb-3 text-sm" x-text="t('feat_2_title')">Relocation</h3>
+                <p class="text-gray-600 text-[11px] leading-relaxed" x-text="t('feat_2_desc')">Pindahan Villa, Rumah, & Kantor seluruh Bali hingga antar negara (Full Service).</p>
+            </div>
+            <div class="bg-white p-8 shadow-2xl border-t-8 border-rv-grey group hover:-translate-y-2 transition-all">
+                <i class="fas fa-box text-3xl text-rv-red mb-6"></i>
+                <h3 class="font-black uppercase italic mb-3 text-sm" x-text="t('feat_3_title')">Expert Packing</h3>
+                <p class="text-gray-600 text-[11px] leading-relaxed" x-text="t('feat_3_desc')">Standar kargo internasional untuk barang seni, furniture, dan barang pecah belah.</p>
+            </div>
+            <div class="bg-white p-8 shadow-2xl border-t-8 border-rv-red group hover:-translate-y-2 transition-all">
+                <i class="fas fa-map-marked-alt text-3xl text-rv-grey mb-6"></i>
+                <h3 class="font-black uppercase italic mb-3 text-sm" x-text="t('feat_4_title')">Domestic</h3>
+                <p class="text-gray-600 text-[11px] leading-relaxed" x-text="t('feat_4_desc')">Logistik ke seluruh penjuru Nusantara via Darat, Laut, dan Udara secara aman.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-slate-100">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+            <div class="md:w-1/2">
+                <span class="text-rv-red font-black tracking-widest uppercase text-xs italic" x-text="t('why_subtitle')">Why Choose RV Bali Cargo?</span>
+                <h2 class="text-4xl md:text-5xl font-black text-rv-grey italic uppercase mt-2 mb-8 leading-tight" x-html="t('why_title')">Solusi Logistik<br><span class="text-rv-red">Tanpa Biaya Tersembunyi.</span></h2>
+                
+                <!-- Daftar 5 Poin Keunggulan (Why Choose Us) -->
+                <div class="space-y-6">
+                    <!-- Poin 1 -->
+                    <div class="flex gap-4 items-start">
+                        <i class="fas fa-check-circle text-rv-red mt-1"></i>
+                        <div>
+                            <h4 class="font-black uppercase text-xs text-rv-grey" x-text="t('why_1_title')">Jadwal Keberangkatan Rutin</h4>
+                            <p class="text-gray-500 text-[11px] mt-1" x-text="t('why_1_desc')">Sistem konsolidasi mingguan memastikan barang Anda berangkat tepat waktu tanpa menunggu lama.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Poin 2 -->
+                    <div class="flex gap-4 items-start">
+                        <i class="fas fa-check-circle text-rv-red mt-1"></i>
+                        <div>
+                            <h4 class="font-black uppercase text-xs text-rv-grey" x-text="t('why_2_title')">Layanan Door-to-Door & Mover</h4>
+                            <p class="text-gray-500 text-[11px] mt-1" x-text="t('why_2_desc')">Barang kami jemput dari alamat pengirim dan kami antar langsung hingga ke depan pintu tujuan akhir Anda.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Poin 3 -->
+                    <div class="flex gap-4 items-start">
+                        <i class="fas fa-check-circle text-rv-red mt-1"></i>
+                        <div>
+                            <h4 class="font-black uppercase text-xs text-rv-grey" x-text="t('why_3_title')">Konsultan Regulasi & Bea Cukai</h4>
+                            <p class="text-gray-500 text-[11px] mt-1" x-text="t('why_3_desc')">Pendampingan penuh untuk dokumen ekspor-impor, klasifikasi HS Code, dan kelancaran proses kepabeanan global.</p>
+                        </div>
+                    </div>
+
+                    <!-- Poin 4 -->
+                    <div class="flex gap-4 items-start">
+                        <i class="fas fa-check-circle text-rv-red mt-1"></i>
+                        <div>
+                            <h4 class="font-black uppercase text-xs text-rv-grey" x-text="t('why_4_title')">Standar Packing Internasional</h4>
+                            <p class="text-gray-500 text-[11px] mt-1" x-text="t('why_4_desc')">Proteksi maksimal untuk furnitur besar dan kargo seni menggunakan wooden crating bersertifikasi fumigasi.</p>
+                        </div>
+                    </div>
+
+                    <!-- Poin 5 -->
+                    <div class="flex gap-4 items-start">
+                        <i class="fas fa-check-circle text-rv-red mt-1"></i>
+                        <div>
+                            <h4 class="font-black uppercase text-xs text-rv-grey" x-text="t('why_5_title')">Manajemen Risiko & Transparansi</h4>
+                            <p class="text-gray-500 text-[11px] mt-1" x-text="t('why_5_desc')">Perlindungan asuransi kargo menyeluruh dengan rincian biaya yang pasti sejak awal, tanpa kejutan tagihan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:w-1/2">
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=400&q=80" class="rounded shadow-lg grayscale hover:grayscale-0 transition duration-500">
+                    <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaad5b?auto=format&fit=crop&w=400&q=80" class="rounded shadow-lg grayscale hover:grayscale-0 transition duration-500 mt-8">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-rv-red font-black tracking-widest uppercase text-xs italic" x-text="t('insight_subtitle')">Consultant Insights</span>
+                <h2 class="text-3xl md:text-4xl font-black text-rv-grey italic uppercase mt-2 mb-4" x-html="t('insight_title')">
+                    5 Kebutuhan Utama <br><span class="text-rv-red">Dalam Solusi Ekspor-Impor & Pindahan</span>
+                </h2>
+                <div class="h-1 w-20 bg-rv-red mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
+                <!-- Need 1 -->
+                <div class="p-6 bg-slate-50 rounded-lg border-t-4 border-rv-grey hover:border-rv-red transition-all duration-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-rv-red mb-4">01</div>
+                        <h4 class="font-black uppercase text-xs text-rv-grey mb-2 tracking-wider" x-text="t('insight_1_title')">Kepatuhan Hukum & Regulasi</h4>
+                        <p class="text-gray-500 text-[11px] leading-relaxed" x-text="t('insight_1_desc')">Pengurusan izin ekspor-impor (NIB), HS Code yang akurat, serta pemenuhan regulasi kepabeanan lintas negara untuk menghindari *red line* atau denda.</p>
+                    </div>
+                </div>
+
+                <!-- Need 2 -->
+                <div class="p-6 bg-slate-50 rounded-lg border-t-4 border-rv-grey hover:border-rv-red transition-all duration-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-rv-red mb-4">02</div>
+                        <h4 class="font-black uppercase text-xs text-rv-grey mb-2 tracking-wider" x-text="t('insight_2_title')">Manajemen Risiko & Asuransi</h4>
+                        <p class="text-gray-500 text-[11px] leading-relaxed" x-text="t('insight_2_desc')">Perlindungan finansial menyeluruh melalui asuransi kargo (*all-risk*) untuk memitigasi risiko kerusakan atau kehilangan barang selama perjalanan internasional.</p>
+                    </div>
+                </div>
+
+                <!-- Need 3 -->
+                <div class="p-6 bg-slate-50 rounded-lg border-t-4 border-rv-grey hover:border-rv-red transition-all duration-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-rv-red mb-4">03</div>
+                        <h4 class="font-black uppercase text-xs text-rv-grey mb-2 tracking-wider" x-text="t('insight_3_title')">Efisiensi Biaya & Pajak</h4>
+                        <p class="text-gray-500 text-[11px] leading-relaxed" x-text="t('insight_3_desc')">Analisis struktur biaya logistik yang transparan, termasuk kalkulasi Bea Masuk, PDRI (Pajak Dalam Rangka Impor), dan pemilihan skema pengiriman termurah.</p>
+                    </div>
+                </div>
+
+                <!-- Need 4 -->
+                <div class="p-6 bg-slate-50 rounded-lg border-t-4 border-rv-grey hover:border-rv-red transition-all duration-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-rv-red mb-4">04</div>
+                        <h4 class="font-black uppercase text-xs text-rv-grey mb-2 tracking-wider" x-text="t('insight_4_title')">Spesialisasi Packing Barang Seni</h4>
+                        <p class="text-gray-500 text-[11px] leading-relaxed" x-text="t('insight_4_desc')">Kebutuhan metode *handling* khusus untuk barang pindahan bermaterial sensitif, seperti furnitur kayu besar, patung, dan kerajinan khas Bali dengan standar *fumigasi* ISPM 15.</p>
+                    </div>
+                </div>
+
+                <!-- Need 5 -->
+                <div class="p-6 bg-slate-50 rounded-lg border-t-4 border-rv-grey hover:border-rv-red transition-all duration-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="text-2xl font-black text-rv-red mb-4">05</div>
+                        <h4 class="font-black uppercase text-xs text-rv-grey mb-2 tracking-wider" x-text="t('insight_5_title')">Visibilitas & Tracking Real-Time</h4>
+                        <p class="text-gray-500 text-[11px] leading-relaxed" x-text="t('insight_5_desc')">Akses informasi berkala mengenai posisi koordinat kontainer serta status *clearance* di pelabuhan tujuan demi ketepatan lini masa distribusi bisnis Anda.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  <div class="bg-gray-900 text-white">
+
+    <section class="py-20 pb-24 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-rv-red font-black tracking-widest uppercase text-xs italic block mb-2" x-text="t('testi_subtitle')">Our Customer Testimonials</span>
+                <h2 class="text-3xl md:text-4xl font-black italic uppercase" x-html="t('testi_title')">What Do Our <span class="text-rv-red">Clients Say?</span></h2>
+                <div class="h-1 w-16 bg-rv-red mx-auto mt-4"></div>
+            </div>
+
+            <div x-data="{ 
+                activeSlide: 0, 
+                get slides() {
+                    return [
+                        { name: 'Liam Henderson', role: 'Boutique Owner, USA', text: t('testi_1_text'), stars: 5 },
+                        { name: 'Hendra Wijaya', role: t('testi_2_role'), text: t('testi_2_text'), stars: 5 },
+                        { name: 'Sophia Dubois', role: 'Expat Relocation, Europe', text: t('testi_3_text'), stars: 5 }
+                    ]
+                }
+            }" class="relative max-w-4xl mx-auto">
+                
+                <div class="overflow-hidden relative min-h-[300px] flex items-center">
+                    <template x-for="(slide, index) in slides" :key="index">
+                        <div x-show="activeSlide === index" 
+                             x-transition:enter="transition ease-out duration-500"
+                             x-transition:enter-start="opacity-0 translate-x-12"
+                             x-transition:enter-end="opacity-100 translate-x-0"
+                             class="w-full text-center px-4 md:px-12">
+                            
+                            <div class="flex justify-center gap-1 mb-6 text-rv-red">
+                                <template x-for="i in slide.stars">
+                                    <i class="fas fa-star text-sm"></i>
+                                </template>
+                            </div>
+
+                            <p class="text-lg md:text-2xl font-medium leading-relaxed italic mb-8 text-gray-300" x-text="slide.text"></p>
+                            
+                            <div class="flex flex-col items-center">
+                                <h4 class="font-black uppercase tracking-widest text-rv-red text-sm" x-text="slide.name"></h4>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1" x-text="slide.role"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="flex justify-center gap-3 mt-12">
+                    <template x-for="(slide, index) in slides" :key="index">
+                        <button @click="activeSlide = index" 
+                                class="h-1 transition-all duration-300 rounded-full"
+                                :class="activeSlide === index ? 'w-12 bg-rv-red' : 'w-4 bg-gray-700 hover:bg-gray-600'"></button>
+                    </template>
+                </div>
+
+                <button @click="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1" 
+                        class="absolute left-0 top-1/2 -translate-y-1/2 text-gray-600 hover:text-rv-red transition hidden md:block">
+                    <i class="fas fa-chevron-left text-2xl"></i>
+                </button>
+                <button @click="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1" 
+                        class="absolute right-0 top-1/2 -translate-y-1/2 text-gray-600 hover:text-rv-red transition hidden md:block">
+                    <i class="fas fa-chevron-right text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-rv-grey border-y border-gray-800">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-12">
+                
+                <div class="flex items-start gap-4">
+                    <div class="text-white text-xl mt-1">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-black tracking-wider uppercase text-sm font-sans text-red-500" x-text="t('call_center_2')">Call Center (24H Service)</h5>
+                        <p class="text-white font-semibold text-xs mt-2">+62 822-3779-9751</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 border-gray-800 md:border-x md:px-12">
+                    <div class="text-white text-xl mt-1">
+                        <i class="far fa-clock"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-black tracking-wider uppercase text-sm font-sans text-red-500" x-text="t('working_hours_2')">Working Hours</h5>
+                        <p class="text-white font-semibold text-xs mt-2">09.00 - 17.00 WITA</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 pt-4 md:pt-0 lg:pl-8">
+                    <div class="text-white text-xl mt-1">
+                        <i class="far fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-black tracking-wider uppercase text-sm font-sans text-red-500" x-text="t('contact_email_2')">Contact by Email</h5>
+                        <p class="text-white font-semibold text-xs mt-2">info@rvbalicargo.com</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+    <section class="h-[550px] w-full grayscale contrast-125 hover:grayscale-0 transition duration-1000 border-y-4 border-rv-grey">
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.336423971434!2d115.1973686!3d-8.6604642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f66847da2f1%3A0x7d6a5e1208930985!2sJl.%20Gunung%20Agung%20II%20No.2%2C%20Pemecutan%2C%20Kec.%20Denpasar%20Bar.%2C%20Kota%20Denpasar%2C%20Bali%2080119!5e0!3m2!1sid!2sid!4v1716447200000!5m2!1sid!2sid" 
+        width="100%" 
+        height="100%" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</section>
+
+    <footer class="bg-gray-900 text-white py-16 border-t-8 border-rv-red">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 text-center md:text-left">
+               <div class="flex items-center gap-3">
+                <img src="rv bali cargo.png" class="h-16">
+
+                <div class="border-l-2 border-gray-700 pl-3">
+                    <h3 class="font-black text-white uppercase">
+                        <span class="text-red-500">RV Bali</span>
+                        <span class="text-gray-300">Cargo</span>
+                    </h3>
+
+                    <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em]">
+                        International Freight Forwarder
+                    </p>
+                </div>
+            </div>
+                <div>
+                    <h4 class="text-rv-red mb-4 uppercase text-xs font-black tracking-widest" x-text="t('footer_office')">Our Office</h4>
+                    <p class="text-gray-400 text-[10px] leading-relaxed uppercase">
+                        Jl. Gunung Agung II No. 2,<br>
+                        Badung, Bali - Indonesia
+                    </p>
+                    <div class="mt-4 text-gray-400 text-[10px] space-y-1">
+                        <p>+62 822-3779-9751</p>
+                        <p>+62 878-1000-0911</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-rv-red mb-4 uppercase text-xs font-black tracking-widest" x-text="t('footer_hours')">Business Hours</h4>
+                    <div class="text-gray-400 text-[10px] space-y-2 uppercase">
+                        <p x-text="t('hours_mon_fri')">Mon – Fri: 09.00 – 17.00 WITA</p>
+                        <p x-text="t('hours_sat')">Sat: 09.00 – 14.00 WITA</p>
+                        <p class="text-rv-red" x-text="t('hours_sun')">Sun & Holiday: Closed</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-rv-red mb-4 uppercase text-xs font-black tracking-widest" x-text="t('footer_social')">Social Media</h4>
+                    <div class="flex justify-center md:justify-start gap-4 text-xl text-rv-red">
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/6282237799751" class="hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-[10px] text-gray-500 uppercase tracking-widest">
+                &copy; 2026 RV BALI CARGO. ALL RIGHTS RESERVED.
+            </div>
+        </div>
+    </footer>
+
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+        <a href="https://wa.me/6282237799751" class="bg-rv-red text-white w-12 h-12 rounded-full flex items-center justify-center text-xl shadow-2xl hover:scale-110 transition">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+       
+    </div>
+
+    <script>
+        function mainApp() {
+            return {
+                lang: localStorage.getItem('lang') || 'en',
+                translations: {
+                    id: {
+                        call_center: "Pusat Panggilan (Layanan 24 Jam) :",
+                        working_hours: "Jam Kerja",
+                        contact_email: "Hubungi Lewat Email",
+                        nav_home: "Beranda",
+                        nav_about: "Tentang Kami",
+                        nav_company_profile: "Profil Perusahaan",
+                        nav_our_team: "Tim Kami",
+                        nav_services: "Layanan",
+                        nav_all_services: "Semua Layanan",
+                        nav_sea_freight: "Jalur Laut",
+                        nav_air_freight: "Jalur Udara",
+                        nav_land_freight: "Jalur Darat",
+                        nav_relocation: "Jasa Pindahan",
+                        nav_testimonials: "Testimoni",
+                        nav_gallery: "Galeri",
+                        nav_contact: "Hubungi Kami",
+                        hero_subtitle: "Mitra Logistik Strategis Anda",
+                        hero_title: "Solusi <span class='text-rv-red'>Kargo</span><br>Terpercaya.",
+                        hero_desc: "Layanan Door-to-Door Internasional & Domestik. Pindahan Profesional (Relokasi) dengan Transparansi Biaya Tanpa Hidden Fees.",
+                        chat_admin_1: "Chat Admin 1",
+                        chat_admin_2: "Chat Admin 2",
+                        feat_1_title: "Ekspor & Impor",
+                        feat_1_desc: "Pengiriman mingguan dari Singapura, China, hingga USA dengan Customs Clearance legal.",
+                        feat_2_title: "Relokasi",
+                        feat_2_desc: "Pindahan Villa, Rumah, & Kantor seluruh Bali hingga antar negara (Full Service).",
+                        feat_3_title: "Packing Ahli",
+                        feat_3_desc: "Standar kargo internasional untuk barang seni, furniture, dan barang pecah belah.",
+                        feat_4_title: "Domestik",
+                        feat_4_desc: "Logistik ke seluruh penjuru Nusantara via Darat, Laut, dan Udara secara aman.",
+                        why_subtitle: "Mengapa Memilih RV Bali Cargo?",
+                        why_title: "Solusi Logistik<br><span class='text-rv-red'>Tanpa Biaya Tersembunyi.</span>",
+                        why_1_title: "Jadwal Keberangkatan Rutin",
+                        why_1_desc: "Sistem konsolidasi mingguan memastikan barang Anda berangkat tepat waktu tanpa menunggu lama.",
+                        why_2_title: "Layanan Door-to-Door & Mover",
+                        why_2_desc: "Barang kami jemput dari alamat pengirim dan kami antar langsung hingga ke depan pintu tujuan akhir Anda.",
+                        why_3_title: "Konsultan Regulasi & Bea Cukai",
+                        why_3_desc: "Pendampingan penuh untuk dokumen ekspor-impor, klasifikasi HS Code, dan kelancaran proses kepabeanan global.",
+                        why_4_title: "Standar Packing Internasional",
+                        why_4_desc: "Proteksi maksimal untuk furnitur besar dan kargo seni menggunakan wooden crating bersertifikasi fumigasi.",
+                        why_5_title: "Manajemen Risiko & Transparansi",
+                        why_5_desc: "Perlindungan asuransi kargo menyeluruh dengan rincian biaya yang pasti sejak awal, tanpa kejutan tagihan.",
+                        insight_subtitle: "Wawasan Konsultan",
+                        insight_title: "5 Kebutuhan Utama <br><span class='text-rv-red'>Dalam Solusi Ekspor-Impor & Pindahan</span>",
+                        insight_1_title: "Kepatuhan Hukum & Regulasi",
+                        insight_1_desc: "Pengurusan izin ekspor-impor (NIB), HS Code yang akurat, serta pemenuhan regulasi kepabeanan lintas negara untuk menghindari red line atau denda.",
+                        insight_2_title: "Manajemen Risiko & Asuransi",
+                        insight_2_desc: "Perlindungan finansial menyeluruh melalui asuransi kargo (all-risk) untuk memitigasi risiko kerusakan atau kehilangan barang selama perjalanan internasional.",
+                        insight_3_title: "Efisiensi Biaya & Pajak",
+                        insight_3_desc: "Analisis struktur biaya logistik yang transparan, termasuk kalkulasi Bea Masuk, PDRI (Pajak Dalam Rangka Impor), dan pemilihan skema pengiriman termurah.",
+                        insight_4_title: "Spesialisasi Packing Barang Seni",
+                        insight_4_desc: "Kebutuhan metode handling khusus untuk barang pindahan bermaterial sensitif, seperti furnitur kayu besar, patung, dan kerajinan khas Bali dengan standar fumigasi ISPM 15.",
+                        insight_5_title: "Visibilitas & Tracking Real-Time",
+                        insight_5_desc: "Akses informasi berkala mengenai posisi koordinat kontainer serta status clearance di pelabuhan tujuan demi ketepatan lini masa distribusi bisnis Anda.",
+                        testi_subtitle: "Testimoni Pelanggan Kami",
+                        testi_title: "Apa Kata <span class='text-rv-red'>Klien Kami?</span>",
+                        testi_1_text: "Pengalaman luar biasa dengan RV Bali Cargo! Kami secara rutin mengirim barang kerajinan massal dan furnitur kayu ke butik kami di California. Tim packing mereka sangat teliti—semuanya sampai dengan selamat.",
+                        testi_2_role: "Pindahan Domestik, Jakarta",
+                        testi_2_text: "Sangat merekomendasikan RV Bali Cargo untuk urusan pindahan rumah antarpulau. Tim lapangannya cekatan sekali saat proses packing barang pecah belah. Harganya jujur sesuai kuotasi awal.",
+                        testi_3_text: "Memindahkan barang pribadi keluarga kami kembali ke Eropa tampak menakutkan, tetapi RV Bali Cargo membuatnya terlihat sangat mudah. Tarif transparan sejak hari pertama dan tidak ada biaya kejutan.",
+                        call_center_2: "Pusat Panggilan (Layanan 24 Jam)",
+                        working_hours_2: "Jam Kerja",
+                        contact_email_2: "Hubungi Lewat Email",
+                        footer_desc: "Spesialis Ekspor - Impor, Relokasi, & Logistik Domestik di Bali.",
+                        footer_office: "Kantor Kami",
+                        footer_hours: "Jam Operasional",
+                        hours_mon_fri: "Sen – Jum: 09.00 – 17.00 WITA",
+                        hours_sat: "Sab: 09.00 – 14.00 WITA",
+                        hours_sun: "Min & Hari Libur: Tutup",
+                        footer_social: "Media Sosial"
+                    },
+                    en: {
+                        call_center: "Call Center (24H Service) :",
+                        working_hours: "Working Hours",
+                        contact_email: "Contact By Email",
+                        nav_home: "Home",
+                        nav_about: "About Us",
+                        nav_company_profile: "Company Profile",
+                        nav_our_team: "Our Team",
+                        nav_services: "Services",
+                        nav_all_services: "All Services",
+                        nav_sea_freight: "Sea Freight",
+                        nav_air_freight: "Air Freight",
+                        nav_land_freight: "Land Freight",
+                        nav_relocation: "Relocation",
+                        nav_testimonials: "Testimonials",
+                        nav_gallery: "Gallery",
+                        nav_contact: "Contact Us",
+                        hero_subtitle: "Your Strategic Logistics Partner",
+                        hero_title: "Reliable <span class='text-rv-red'>Cargo</span><br>Solutions.",
+                        hero_desc: "International & Domestic Door-to-Door Services. Professional Relocation with Cost Transparency and No Hidden Fees.",
+                        chat_admin_1: "Chat Admin 1",
+                        chat_admin_2: "Chat Admin 2",
+                        feat_1_title: "Export & Import",
+                        feat_1_desc: "Weekly shipments from Singapore, China, to USA with legal Customs Clearance.",
+                        feat_2_title: "Relocation",
+                        feat_2_desc: "Villa, Home, & Office relocation throughout Bali to international destinations (Full Service).",
+                        feat_3_title: "Expert Packing",
+                        feat_3_desc: "International cargo standards for art, furniture, and glassware.",
+                        feat_4_title: "Domestic",
+                        feat_4_desc: "Logistics across the Archipelago via Land, Sea, and Air safely.",
+                        why_subtitle: "Why Choose RV Bali Cargo?",
+                        why_title: "Logistics Solutions<br><span class='text-rv-red'>Without Hidden Fees.</span>",
+                        why_1_title: "Regular Departure Schedule",
+                        why_1_desc: "Weekly consolidation system ensures your goods depart on time without long waits.",
+                        why_2_title: "Door-to-Door & Mover Service",
+                        why_2_desc: "We pick up goods from the sender's address and deliver them directly to your final destination door.",
+                        why_3_title: "Regulatory & Customs Consultant",
+                        why_3_desc: "Full assistance for export-import documents, HS Code classification, and smooth global customs processes.",
+                        why_4_title: "International Packing Standards",
+                        why_4_desc: "Maximum protection for large furniture and art cargo using certified fumigation wooden crating.",
+                        why_5_title: "Risk Management & Transparency",
+                        why_5_desc: "Comprehensive cargo insurance protection with fixed cost details from the start, no billing surprises.",
+                        insight_subtitle: "Consultant Insights",
+                        insight_title: "5 Main Needs <br><span class='text-rv-red'>In Export-Import & Relocation Solutions</span>",
+                        insight_1_title: "Legal & Regulatory Compliance",
+                        insight_1_desc: "Management of export-import permits (NIB), accurate HS Codes, and fulfillment of cross-border customs regulations to avoid red lines or fines.",
+                        insight_2_title: "Risk Management & Insurance",
+                        insight_2_desc: "Comprehensive financial protection through cargo insurance (all-risk) to mitigate the risk of damage or loss during international transit.",
+                        insight_3_title: "Cost & Tax Efficiency",
+                        insight_3_desc: "Transparent analysis of logistics cost structures, including Import Duty calculations, PDRI (Import Taxes), and selection of the cheapest shipping schemes.",
+                        insight_4_title: "Art Packing Specialization",
+                        insight_4_desc: "Need for special handling methods for relocation items with sensitive materials, such as large wooden furniture, statues, and Balinese crafts with ISPM 15 fumigation standards.",
+                        insight_5_title: "Visibility & Real-Time Tracking",
+                        insight_5_desc: "Regular access to information regarding container coordinates and clearance status at the destination port for the accuracy of your business distribution timeline.",
+                        testi_subtitle: "Our Customer Testimonials",
+                        testi_title: "What Do Our <span class='text-rv-red'>Clients Say?</span>",
+                        testi_1_text: "Outstanding experience with RV Bali Cargo! We regularly ship bulk handicraft items and wooden furniture to our boutique in California. Their crating team is incredibly meticulous—everything arrived safely.",
+                        testi_2_role: "Domestic Relocation, Jakarta",
+                        testi_2_text: "Highly recommend RV Bali Cargo for inter-island house relocation. The field team was very quick during the glassware packing process. The price was honest according to the initial quotation.",
+                        testi_3_text: "Moving our family personal belongings back to Europe seemed daunting, but RV Bali Cargo made it look so easy. Transparent rates from day one and no surprise fees.",
+                        call_center_2: "Call Center (24H Service)",
+                        working_hours_2: "Working Hours",
+                        contact_email_2: "Contact by Email",
+                        footer_desc: "Export - Import, Relocation, & Domestic Logistic Specialist in Bali.",
+                        footer_office: "Our Office",
+                        footer_hours: "Business Hours",
+                        hours_mon_fri: "Mon – Fri: 09.00 – 17.00 WITA",
+                        hours_sat: "Sat: 09.00 – 14.00 WITA",
+                        hours_sun: "Sun & Holiday: Closed",
+                        footer_social: "Social Media"
+                    }
+                },
+                t(key) {
+                    return this.translations[this.lang][key] || key;
+                },
+                setLang(l) {
+                    this.lang = l;
+                    localStorage.setItem('lang', l);
+                    document.documentElement.lang = l;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
